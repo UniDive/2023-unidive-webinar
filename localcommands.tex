@@ -1,0 +1,69 @@
+\usepackage{xcolor}
+
+%\newcommand{\ile}[1] {{\scriptsize \textcolor{RoyalBlue}{\textit{#1}}}}
+%\newcommand{\lit}[1]{{\scriptsize \textcolor{RoyalBlue}{`#1'}}} %Literal translation
+%\newcommand{\idio}[1]{{\scriptsize \textcolor{RoyalBlue}{`#1'}}}  %Idiomatic translation
+%\newcommand{\exlit}[2]{\ile{#1}~\lit{#2}} %Example with a literal translation
+%\newcommand{\exidio}[2]{\ile{#1}~\idio{#2}} %Example with an idiomatic translation
+%\newcommand{\litidio}[2]{\lit{#1}$~\Rightarrow~$\idio{#2}} %Literal and idiomatic translation
+%\newcommand{\exlitidio}[3]{\ile{#1}~\lit{#2}~$\Rightarrow$~\idio{#3}} %Example with a literal and a and idiomatic translation
+
+\newcommand{\ana}[1] {{\scriptsize \textcolor{RoyalBlue}{#1}}} %Output of an analysis of a text 
+\newcommand{\iletrue}[1] {\textcolor{OliveGreen}{#1}}
+\newcommand{\ilefalse}[1] {\textcolor{Red}{#1}}
+\newcommand{\ileunsure}[1] {\textcolor{BurntOrange}{#1}}
+%\newcommand{\lex}[1] {\textbf{#1}} %Lexicalized component
+
+
+%%%%%%%%%%%
+%% in-line examples for languages in Latin script
+%%%%%%%%%%
+\usepackage{ulem}
+\newcommand{\lex}[1]{\textbf{#1}}  %Lexicalized component
+\newcommand{\litlex}[1]{\uwave{#1}}  %Literal reading of a lexicalized component
+\newcommand{\coinlex}[1]{\dashuline{#1}}  %Coincindental co-occurrence of lexicalized components
+
+\newcommand{\ile}[1]{\textcolor{blue}{\textsl{#1}}} %In-line example  
+\newcommand{\lit}[1]{\textcolor{gray}{`#1'}} %Literal translation
+\newcommand{\idio}[1]{\textcolor{brown}{`#1'}}  %Idiomatic translation
+\newcommand{\exlit}[2]{\ile{#1}~\lit{#2}} %Example with a literal translation
+\newcommand{\exidio}[2]{\ile{#1}~\idio{#2}} %Example with an idiomatic translation
+\newcommand{\litidio}[2]{\lit{#1}$ \Rightarrow $\idio{#2}} %Literal and idiomatic translation
+\newcommand{\exlitidio}[3]{\ile{#1}~\lit{#2}$\Rightarrow$\idio{#3}} %Example with a literal and a and idiomatic translation
+
+
+%%%%%%%%%%
+\setbeamertemplate{itemize/enumerate subbody begin}{\scriptsize}
+
+\usepackage{relsize}
+\newcommand{\lang}[1]{\textcolor{gray}{\textsmaller[1.5]{\fbox{\textsf{#1}}}}}
+
+\newcommand{\formatPOS}[1]{{\scriptsize #1}}
+\newcommand{\formatMorph}[1]{\_}  %{{\tiny #1}}
+\newcommand{\formatMWE}[1]{\textcolor{blue}{#1}}
+
+\newcommand*\GBitem{%
+   \item[{\includegraphics[width=0.2cm]{Images/Flags/UnitedKingdom.png}}]}
+\newcommand*\FRitem{%
+   \item[{\includegraphics[width=0.2cm]{Images/Flags/France.png}}]}
+\newcommand*\PLitem{%
+   \item[{\includegraphics[width=0.2cm]{Images/Flags/Poland.png}}]}
+\newcommand*\SRitem{%
+   \item[{\includegraphics[width=0.2cm]{Images/Flags/Serbia.png}}]}
+\newcommand*\ITitem{%
+   \item[{\includegraphics[width=0.2cm]{Images/Flags/Italy.png}}]}
+
+\newcommand{\gloss}[1] {
+  {\scriptsize \textcolor{blue}{'#1'}}}
+
+%%%%% Linguistic examples in blue scriptsize italic
+\newcommand{\exa}[1]{\textcolor{blue}{\textit{#1}}}
+
+%%%%% Bibliographic references in scriptsize
+\newcommand{\mycite}[1]{{\scriptsize \textcolor{magenta}{\cite{#1}}}}
+\newcommand{\minicite}[1]{{\scriptsize \cite{#1}}}
+%\newcommand{\minicitet}[1]{{\scriptsize \citet{#1}}}
+
+%%%%% Bets results
+\newcommand{\best}[1]{\textbf{#1}}
+
