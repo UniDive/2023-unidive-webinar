@@ -122,6 +122,7 @@
 
 \end{frame}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{MWEs} 
 \subsection{}
@@ -148,47 +149,35 @@ A mode of behaviour or a property which is \textbf{particular} to an (few) indiv
 %%%%%%%%%%%%%
 
 \begin{frame}
-  \frametitle{Sample idiosyncrasies in MWEs}
+  \frametitle{MWE's \exidio{X-factor}{special quality}}
 
-\begin{scriptsize}
+%\begin{scriptsize}
 
-\begin{block}{}%Major types  of idiosyncrasies in MWEs}
+\begin{block}{Non-compositional semantics}
    \begin{itemize}
-   \item \textbf{Non-compositional semantics}: the meaning of a MWE is surprising, given the meanings of its component words
+   \item The meaning of a MWE is surprising, given the meanings of its component words
       \begin{itemize}
-      %\GBitem 
       \item[]\lang{EN} \exidio{to \lex{pull} one's \lex{leg}}{to tease someone playfully}
-      %\ITitem 
       \item[]\lang{IT} \exlitidio{\lex{lasciar perdere}}{to let lose}{to give up}
-      \end{itemize}
-   \item Morphosyntactic \textbf{irregularity} (token\footnote{{\scriptsize Token = individual occurrence}}-specific):
-      \begin{itemize}
-      %\FRitem 
-      \item[]\lang{FR} \exidio{\lex{grand-mères}}{grand$_{sing.masc}$-mothers$_{pl.fem}$} (defective agreement)
-      %\GBitem 
-      \item[]\lang{EN} \exidio{\lex{by and large}}{mostly} (Prep Conj Adj is an irregular syntactic structure)
-      %\GBitem 
-      \item[]\lang{EN} \exidio{to \lex{go nuts}}{to get crazy} (\ile{go} alone is intransitive)
-      \end{itemize}
-   \item Restricted morphosyntactic \textbf{flexibility} (type\footnote{{\scriptsize Type = sets of surface realizations of the same expression}}-specific):
-      \begin{itemize}
-      %\GBitem 
-      \item[]\lang{EN} \exidio{\lex{the die is cast}}{a point of no-retreat has been passed} vs. \ile{\#someone cast the die}
       \end{itemize}
    \end{itemize}
 \end{block}
 
-\end{scriptsize}
+\begin{block}{Challenge}
+Semantic non-compositionality is \textbf{hard to test directly}.
+\end{block}
+
+%\end{scriptsize}
 
 \end{frame}
 
 
 %%%%%%%%%%%%%%%
 \begin{frame} 
-\frametitle{Restricted flexibility: a proxy for semantic non-compositionality}
+\frametitle{Inflexibility: a proxy for semantic non-compositionality}
 
-\begin{block}{}
-A MWE is (much) \textbf{less flexible} (variable) than a regular construction of the same syntactic structure.
+\begin{block}{Hypothesis}
+A MWE is \textbf{less flexible} than a regular construction of the same syntactic structure.
 \end{block}
 
 \vspace{0.5cm}
@@ -273,35 +262,6 @@ Canonical forms are useful for \textbf{formalizing} the morpho-syntactic propert
 
 \end{frame}
 
-%%%%%%%%%%%%%%%%
-\begin{frame} 
-\frametitle{Focus on \textbf{verbal} MWEs}
-
-\begin{scriptsize}
-
-%\vspace{-0.2cm}
-\begin{block}{Verbal MWEs (VMWEs)}
-MWEs whose \textbf{canonical form} is such that:
-    \begin{itemize}
-    \item its syntactic head is a verb V 
-    \item its other lexicalized components form phrases directly dependent on V, i.e. the \textbf{dependency subgraph} of the lexicalized components is weakly \textbf{connected}
-    \end{itemize}
-
-\begin{tabular}{cc}
-\includegraphics[width=.55\textwidth]{Images/throw-to-the-lions} &
-\xcancel{\includegraphics[width=.35\textwidth]{Images/both-and}}
-\end{tabular}
-
-\end{block}
-
-\end{scriptsize}
-
-\end{frame}
-
-
-\begin{comment}
-\end{comment}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Annotation} 
 \subsection{}
@@ -318,7 +278,7 @@ MWEs whose \textbf{canonical form} is such that:
 \begin{frame}
   \frametitle{PARSEME annotation guidelines \textcolor{magenta}{{\scriptsize (\url{https://parsemefr.lis-lab.fr/parseme-st-guidelines/1.2})}}}
 
-\begin{scriptsize}
+%\begin{scriptsize}
 
 \vspace{-0.2cm}
 
@@ -330,24 +290,9 @@ MWEs whose \textbf{canonical form} is such that:
 \end{itemize}
 \end{block}
 
-\vspace{-0.2cm}
-
-\begin{block}{Principles and constraints} 
-\begin{itemize}
-\item Annotation follows a \textbf{decision diagram} (unique starting point)
-\item Non-compositionality is a matter of \textbf{scale} but decisions must be \textbf{binary}
-\item \textbf{Semantic non-compositionality} is the major property to capture but is \textbf{hard to test directly}
-\item Lexical and morpho-syntactic \textbf{inflexibility} is considered a \textbf{proxy} for semantic non-compositionality
-\item Inflexibility tests are driven by the \textbf{syntactic structure}
-\item Strong dependence on the underlying \textbf{syntactic theory}
-\item PARSEME annotation largely \textbf{relies on the UD} annotation of morpho-syntax
-\end{itemize}
-\end{block}
-
-\end{scriptsize}
+%\end{scriptsize}
 
 \end{frame}
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -399,21 +344,33 @@ MWEs whose \textbf{canonical form} is such that:
 
 \end{frame}
 
+
 %%%%%%%%%%%%%%%%
 \begin{frame} 
-\frametitle{Unified multilingual annotation guidelines \href{http://parsemefr.lif.univ-mrs.fr/parseme-st-guidelines/1.1}{\beamergotobutton{[link]}}}
+\frametitle{Towards reproducibility -- guidelines as decision diagrams}
 
-\ile{the fate of the republic rests on your shoulders}
+\centering
+\includegraphics[scale=0.3]{Images/decision-diagram}
+
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%
+\begin{frame} 
+\frametitle{Annotation exercise 1 \href{https://mwe.phil.hhu.de/}{\beamergotobutton{[FLAT]}}\href{http://parsemefr.lif.univ-mrs.fr/parseme-st-guidelines/1.3}{\beamergotobutton{[guidelines]}}}
+
+\ile{the fate of the republic rests on your shoulders} (sentence 4)
 
 \begin{scriptsize}
-\begin{block}{Annotation exercise}
+\begin{block}{}
 \begin{itemize}
 \item Step 1: identify the candidate and its canonical form: \ile{rests on your shoulders}
 \item Step 2: determine the lexicalized components
    \begin{itemize}
    \item \ile{\lex{rests on} your/our \lex{shoulders}}, \ile{\lex{rests on} the \lex{shoulders} of the deputies}, etc.
    \end{itemize}
-\item Follow the \href{http://parsemefr.lif.univ-mrs.fr/parseme-st-guidelines/1.1/?page=040\_Annotation\_process\_-\_decision\_tree}{\beamergotobutton{decision tree}}
+\item Follow the \href{http://parsemefr.lif.univ-mrs.fr/parseme-st-guidelines/1.3/?page=040\_Annotation\_process\_-\_decision\_tree}{\beamergotobutton{decision tree}}
    \begin{itemize}
    \item S.1 [1HEAD] (YES): \ile{rests} is the only verbal head of the whole phrase
    \item S.2 [1DEP] (YES): \ile{on shoulders} is the only lexicalized dependent of \ile{rests}
@@ -432,35 +389,156 @@ MWEs whose \textbf{canonical form} is such that:
 \end{frame}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Conclusions}  
+%%%%%%%%%%%%%%%%
+\begin{frame} 
+\frametitle{Annotation exercise 2}
+
+\ile{I hate to put a little pressure on you} (sentence 4)
+
+\begin{scriptsize}
+\begin{block}{}
+\begin{itemize}
+\item Step 1: identify the candidate and its canonical form: \ile{put a little pressure on you}
+\item Step 2: determine the lexicalized components
+   \begin{itemize}
+   \item \ile{\lex{put} a little \lex{pressure} on you}, \ile{\underline{put} more/no/a lot of \underline{pressure}}, etc.
+   \end{itemize}
+\item Follow the \href{http://parsemefr.lif.univ-mrs.fr/parseme-st-guidelines/1.3/?page=040\_Annotation\_process\_-\_decision\_tree}{\beamergotobutton{decision tree}}
+   \begin{itemize}
+   \item S.1 (YES) $\rightarrow$ S.2 (YES) $\rightarrow$ S.3 (NO) $\rightarrow$ S.4 (extended NP) $\rightarrow$
+   \item LVC.0 [N-ABS] (YES): \ile{pressure} is not abstract
+   \item LVC.1 [N-PRED] (YES): 2 semantic arguments: (i) the person putting pressure, (ii) the person subject to the pressure
+   \item LVC.2 [V-SUBJ-N-ARG] (YES): I is the subject of \ile{put} and the agent of \ile{pressure} 
+   \item LVC.3 [V-LIGHT] (YES): \ile{\lex{put pressure}} $\approx$ force
+   \item LVC.4 [V-REDUC] (YES): \ile{my pressure on you}
+   \end{itemize}
+\item Outcome: \textbf{LVC.full}
+\end{itemize}
+\end{block}
+
+\end{scriptsize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%
+\begin{frame} 
+\frametitle{Annotation exercise 3}
+
+\ile{Mr Osborne signed up with a US speakers agency} (sentence 26)
+
+\begin{scriptsize}
+\begin{block}{}
+\begin{itemize}
+\item Steps 1-2: identify the candidate and its canonical form: \ile{\underline{sign up}} or \ile{\underline{sign up with}}
+   \begin{itemize}
+   \item A VMWE in its proptotypical form is a verbal phrase in active voice whose head verb is in a finite for and whose \underline{other lexicalized components depend either on the verb or on another lexicalized component}
+   \item In the the lexical (as opposed to functional) approach to dependency grammar \underline{prepositions depend on the nouns} they introduce $\Rightarrow$ \ile{\underline{sign up}}
+   \end{itemize}
+\item Follow the \href{http://parsemefr.lif.univ-mrs.fr/parseme-st-guidelines/1.3/?page=040\_Annotation\_process\_-\_decision\_tree}{\beamergotobutton{decision tree}}
+   \begin{itemize}
+   \item S.1 (YES) $\rightarrow$ S.2 (YES) $\rightarrow$ S.3 (NO) $\rightarrow$ PREP.EN.1 (YES) $\rightarrow$ S.4 (particle) $\rightarrow$
+   \item VPC.1 [PART-REDUC] (YES): \exidio{sign up}{to sign one's name (as to a contract) in order to join something} and \ile{sign} refer to the same event
+   \item VPC.2 [PART-SPATIAL] (NO): \ile{up} is not spatial in the context of \ile{sign}
+   \item VPC.3 [PART-SPATIAL-LIT] (NO): there is no literal reading of \ile{sign up} with \ile{up} being spatial
+   \end{itemize}
+\item Outcome: \textbf{VPC.semi}
+\end{itemize}
+\end{block}
+
+\end{scriptsize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%
+\begin{frame} 
+\frametitle{Annotation exercise 4}
+
+\ile{Opportunity for Beijing to demonstrate its ambitions} (sentence 44)
+
+\begin{scriptsize}
+\begin{block}{}
+\begin{itemize}
+\item Steps 1-2: identify the candidate and its canonical form: \ile{\underline{demonstrate} its \underline{ambitions}} 
+\item Follow the \href{http://parsemefr.lif.univ-mrs.fr/parseme-st-guidelines/1.3/?page=040\_Annotation\_process\_-\_decision\_tree}{\beamergotobutton{decision tree}}
+   \begin{itemize}
+   \item LVC.0 [N-ABS] (YES): \ile{ambition} is abstract
+   \item LVC.1 [N-PRED] (YES): 2 semantic arguments: (i) the person/group having the ambition, (ii) object of the ambition
+   \item LVC.2 [V-SUBJ-N-ARG] (YES): \ile{Bejing} is the subject of \ile{demonstrate} and the agent of \ile{ambitions}
+   \item LVC.3 [V-LIGHT] (NO): \ile{ambitions} can exist without being demonstrated
+   \item VID.1, VID. 2, VID.3, VID.4, VID5 (NO): \ile{demonstrate}/\ile{show}/\ile{display} \ile{its} \ile{ambitions}/\ile{aspirations}/\ile{desires}
+   \end{itemize}
+\item Outcome: \textbf{no VMWE}
+\end{itemize}
+\end{block}
+
+\end{scriptsize}
+
+\end{frame}
+
+
+\begin{frame} 
+\frametitle{Homework}
+
+Take the text in English and try to annotate the following sentences:
+
+\begin{block}{}
+\begin{itemize}
+\item \ile{We \underline{face} a lot of \underline{competition}} (sentence 14)
+\item \ile{There are \underline{parallels} to \underline{draw}} (sentence 17)
+\item \ile{\underline{Vote} was \underline{cast}} (sentence 18)
+\item \ile{The date for \underline{cutting the first steel}} (sentence 27)
+\item \ile{To \underline{charge} passengers an access \underline{fee}} (sentence 36)
+\item \ile{\underline{put} new \underline{limits}} (sentence 54)
+\item \ile{\underline{The few ruin it for the many}} (sentence 45)
+\item \ile{\underline{Took down} popular websites} (sentence 46)
+\item \ile{We are \underline{moving in the right direction}} (sentence 50)
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%
+\begin{frame} 
+\frametitle{PARSEME infrastructure}
+
+\begin{block}{}
+\begin{itemize}
+\item PARSEME wiki - extensive documentation of the corpora and tools  \href{https://gitlab.com/parseme/corpora/-/wikis}{\beamergotobutton{[link]}}
+\item Language Leader guide
+\item User guides
+\item Gitlab repositories for all languages %\href{https://gitlab.com/parseme/corpora/-/wikis/home#languages}{\beamergotobutton{[language table]}}
+\item Corpus validators, converters, filters, release automation \ldots
+\item Data quality tools
+   \begin{itemize}
+   \item Consistency checks %\href{https://grew.fr/download/PARSEME/pt.html}{\beamergotobutton{[e.g. for Portuguese]}}
+   \end{itemize} 
+\item Corpus browser: Grew-match $\longrightarrow$ see the \textbf{tutorial by Bruno} in a few minutes
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Wrap-up}  
 \subsection{}
 
 %%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-   \frametitle{Conclusions}
+   \frametitle{PARSEME annotation framework -- conclusions}
 
 \begin{scriptsize}
-\begin{block}{Results}
-\begin{itemize}
-\item \textbf{Strong progress} on automatic identification of verbal MWEs (resources \& tools)
-\item MWE identification is more challenging than related tasks (e.g. NER)
-\item \textbf{Unseen} data are critically hard
-\item Much progress can be gained from careful \textbf{account of variability} of seen VMWEs
-\item Contextual \textbf{embeddings} help generalize over (the few) \textbf{lexically flexible} VMWEs
-\item \textbf{Few} efforts on coupling supervised with \textbf{unsupervised} methods
-\item Truly \textbf{unseen idioms} cannot be found
-\item Zipfian tail still seems long (diversity is weak)
-\end{itemize}
-\end{block}
 
-\begin{block}{Position statement}
+\begin{block}{Principles and constraints} 
 \begin{itemize}
-\item The difficulties of MWE identification lie in the very \textbf{nature of MWEs}
-\item \textbf{Lexicons} balance the Zipfian tail on syntactically diverse and figurative idioms
-\item MWE identification should be coupled with MWE \textbf{lexicons and discovery tools}
-\item \textbf{Computationally less intensive} methods should be developed
-\item Lexical \textbf{diversity} should be preserved
+\item The annotations guidelines are \textbf{unified} accross 26 languages with relatively few \textbf{language-specific} sections 
+\item Annotation follows a \textbf{decision diagram} (unique starting point), for the sake of \textbf{reproducibility}
+\item Non-compositionality is a matter of \textbf{scale} but decisions must be \textbf{binary}
+\item \textbf{Semantic non-compositionality} is the major property to capture but is \textbf{hard to test directly}
+\item Lexical and morpho-syntactic \textbf{inflexibility} is considered a \textbf{proxy} for semantic non-compositionality
+\item Inflexibility tests are driven by the \textbf{syntactic structure}
+\item Strong dependence on the underlying \textbf{syntactic theory}
+\item PARSEME annotation largely \textbf{relies on the UD} annotation of morpho-syntax
 \end{itemize}
 \end{block}
 
@@ -474,12 +552,6 @@ MWEs whose \textbf{canonical form} is such that:
 \newcounter{finalframe}
 \setcounter{finalframe}{\value{framenumber}}
 %%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{frame}
-%   \frametitle{The Holy Grail}
-
-%\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -503,152 +575,6 @@ MWEs whose \textbf{canonical form} is such that:
 \setcounter{framenumber}{\value{finalframe}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%
-%\section{IAA} %and Motivation
-%\subsection{}
-
-%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-  \vspace*{-5pt}
-  \frametitle{Inter-annotator agreement}
-
-
-\begin{block}{What is IAA?}
-A measure meant to assess:
-\begin{itemize}
-\item hardness of the annotation task
-\item quality of the annotation methodology
-\item quality of the resulting annotations
-\end{itemize}
-\end{block}
-
-\begin{block}{Popular IAA measure: Cohen's $\kappa$}
-\begin{itemize}
-\item Setting: two raters classify \textbf{N items} into C \textbf{mutually exclusive categories}
-\item Measure: \\
-~~~~~~~~~~$\kappa = \frac{P_O - P_E}{1-P_E}$
-   \begin{itemize}
-   \item $P_O$ - observed agreement
-   \item $P_E$ - expected (chance) agreement
-   \end{itemize}
-\end{itemize}
-\end{block}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}[label={iaa}]
-  \vspace*{-5pt}
-  \frametitle{Challenges for IAA}
-
-\begin{scriptsize}
-
-\begin{block}{Challenges features of VMWE annotation}
-\begin{itemize}
-\item \emph{Unitising}, i.e.\ identifying the boundaries of a VMWE in the text
-\item \emph{Categorisation}, i.e.\ assigning each identified VMWE to one of the pre-defined categories
-\item \emph{Sporadicity}, i.e.\ the fact that not all text tokens are subject to annotation (unlike in part-of-speech annotation, for instance);
-\item \emph{Free overlap}, e.g.\ in (CS) \exidio{\lex{ukládal} různé \lex{sankce} a \lex{penále}}{put various sanctions and penalties}, where two LVCs share a light verb;
-\end{itemize}
-\end{block}
-
-\begin{block}{Challenges for IAA}
-\begin{itemize}
-\item What are the atomic units (Cohen's items) of annotation?
-   \begin{itemize}
-   \item text \textbf{tokens} $\Rightarrow$ categories are not mutually exclusive due to ovelaps
-   \item text \textbf{spans} $\Rightarrow$ two annotators may end up with different sets of units $\Rightarrow$ unitising is part of the IAA measure
-   \end{itemize}
-\item In unitising IAA: What is the chance agreement?
-\end{itemize}
-\end{block}
-
-\end{scriptsize}
-
-\end{frame}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}[label={iaa}]
-  \vspace*{-5pt}
-  \frametitle{Three IAA measures in the PARSEME corpus}
-
-%\begin{scriptsize}
-
-\begin{block}{$F_{span}$}
-\begin{itemize}
-\item F-measure of annotator A1 prediction wrt. A2 (MWE-based or token-based)
-\end{itemize}
-\end{block}
-
-\begin{block}{$\kappa_{span}$}
-\begin{itemize}
-\item Task simplification: For each verb $v$, decide if $v$ belongs to a VMWE or not.
-\item Cohen's $\kappa$ in which the chance agreement is based on the number of verbs
-\end{itemize}
-\end{block}
-
-\begin{block}{$\kappa_{cat}$}
-\begin{itemize}
-\item Cohen's $\kappa$ for VMWEs on which both annotators agree on the span
-\end{itemize}
-\end{block}
-
-%\end{scriptsize}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}[label={iaa}]
-  \vspace*{-5pt}
-  \frametitle{IAA: data newly annotated in the PARSEME corpus v 1.2}
-  
-\setlength{\tabcolsep}{0.5mm}
-\begin{tabular}{@{~}l@{~~}l@{~~}l@{~~}l@{~~}l@{~~}l@{~~}l@{~}}
-\hline\hline
-& $S$& $A_1$&$A_2$& $F_{\text{span}}$ &$\kappa_{\text{span}}$&  $\kappa_{\text{cat}}$\\
-\hline
-Greek       & ~874 & 293 & 394 & 0.652$_{(0.694)}$ & 0.608$_{(0.665)}$ & \textbf{0.715}$_{(0.673)}$ \\
-Irish       & ~800   & 312 & 270 & 0.715 & 0.663 & 0.835 \\
-Polish      & ~900 & 252 & 296 & \textbf{0.774}$_{(0.619)}$ & \textbf{0.732}$_{(0.568)}$ & \textbf{0.907}$_{(0.882)}$ \\
-Br. Portug.  & 1251 & 253 & 232 & 0.672$_{(0.713)}$ & 0.640$_{(0.684)}$ & \textbf{0.928}$_{(0.837)}$ \\
-Swedish     & ~700 & 364 & 257 & 0.734 & 0.671 & 0.847 \\
-Chinese    & 3953 & 883 & 840 & 0.584 & 0.544 & 0.833 \\
-\hline\hline
-\end{tabular}
-
-\begin{itemize}
-\item $S$ = nb. of sentence
-\item $A_1, A_2$ = VMWEs per annotator
-\item subscripts = IAA in edition 1.1 (on different samples)
-\end{itemize}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-   \frametitle{Projet d'intégration LIMSI (MWE++)}
-
-\begin{scriptsize}
-\setlength{\tabcolsep}{0.3mm}
-\begin{tabular}{|p{2.2cm}|p{5cm}|p{3.5cm}|}
-\hline
-\textbf{Mots clefs ILES} & \textbf{Expérience AS} & \textbf{Perspectives}\\\hline
-constitution de grands corpus & EP (PARSEME, PARSEME-FR); EN (Corpus National du Polonais); coref. (CORE-PL), évén. (TEMPORAL, ODIL-FR, ISOTimeML)  & PARSEME-toutes EP, UD-PARSEME , universalisme\\\hline
-campagnes d'évaluation & shared task PARSEME (1.0, 1.1, \ldots) & PARSEME 2.0\\\hline
-multilinguisme & réseau PARSEME, 10 ressources, 18 langues & nouveau COST ou ETN\\\hline
-paraphrase & variabilité d'EP & normalisation et modélisation sémantique d'EP \\\hline
-extraction d'information & reconnaissance automatique: EN (embriquées), d'EP, termes, émotions & action DOING@MADICS, reco. de variantes d'EP multilingues \\\hline
-langue de signes, corpus multimod. & premiers contacts dans PARSEME & annotation d'EP dans les langues de signes \\\hline
-langue parlée & reco. emotions (Emotirob), annot. coref \& événements (ODIL), corpus ESLO & émotion dans les EP \\\hline
-approches symboliques et statistiques & grammaires de précision, parsing symbolique et EP, reco. supervisée d'EN et EP & apprentissage des profils de variabilité d'EP \\\hline
-langues régionales & EPs en dialectes ES & variation dialectale d'EP, COST UniDive\\\hline
-\end{tabular}
-\end{scriptsize}
-
-\end{frame}
-
 
 \end{document}
-
 
