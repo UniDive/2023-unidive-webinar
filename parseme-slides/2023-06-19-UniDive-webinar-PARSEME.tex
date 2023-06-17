@@ -24,13 +24,14 @@
 \usepackage{eurosym}
 \usepackage{hyperref}
 \usepackage{comment}
+\usepackage{url}
 
 \input{localcommands.tex}
 
 \usetheme{Darmstadt}
 \setbeamertemplate{footline}
 {
-  \leavevmode%
+  \leavevmode%p
   \hbox{%
   \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
     \usebeamerfont{author in head/foot}\insertshortauthor%~~\beamer@ifempty{\insertshortinstitute}{}{(\insertshortinstitute)}
@@ -68,7 +69,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\title[PARSEME Intro]{Introduction to annotating verbal multiword expressions in the PARSEME framework\\\includegraphics[scale=0.3]{Images/parseme-logo.png}}
+\title[PARSEME Intro]{Introduction to annotating verbal multiword expressions in the PARSEME framework\\\vspace{0.3cm}\includegraphics[scale=0.3]{Images/parseme-logo.png}}
 
 \author{Carlos Ramisch, Agata Savary}
 
@@ -107,9 +108,9 @@
 
 \begin{block}{MWE corpora (\textcolor{magenta}{\url{https://gitlab.com/parseme/corpora/-/wikis/}})}
 \begin{itemize}
-\item \textbf{Collaborative} effort: 25 language teams, 31 language leaders, 160 annotators
-\item Annotation \textbf{guidelines} for \textbf{verbal} MWEs \textbf{unified} across some 25 languages
-\item Corpora \textbf{manually} annotated for MWEs: \textbf{25 languages}, open licenses
+\item \textbf{Collaborative} effort: 26 language teams, 35 language leaders, 200 annotators
+\item Annotation \textbf{guidelines} for \textbf{verbal} MWEs \textbf{unified} across 26 languages
+\item Corpora \textbf{manually} annotated for MWEs: \textbf{26 languages}, open licenses
 \item \textbf{Continuous enhancements} of the guidelines and corpora
 \end{itemize}
 \end{block}
@@ -135,8 +136,11 @@
 \textit{The \textcolor{red}{\textbf{prime time}} speech by \textcolor{blue}{\textbf{first lady}} \textcolor{green}{\textbf{Michelle Obama}} \textcolor{magenta}{\textbf{set}} the house \textcolor{magenta}{\textbf{on fire}}. She made \textcolor{brown}{\textbf{crystal clear}} which issues she \textcolor{violet}{\textbf{took to heart}} but she was \textcolor{orange}{\textbf{preaching to the choir}}.}
 \end{block}
 
-\begin{block}{Definition \cite{baldwin-kim:2010:handbook}}
-Combination of at least \textbf{two words} which exhibits lexical, morphological, syntactic, semantic and /or statistical \textbf{idiosyncrasies}.
+\pause
+
+\begin{block}{A definition}% \cite{baldwin-kim:2010:handbook}}
+Combination of at least \textbf{two words} which exhibits lexical, morphological, syntactic, and/or semantic \textbf{idiosyncrasies}.
+%and /or statistical \textbf{idiosyncrasies}.	
 \end{block}
 
 \begin{block}{Idiosyncrasy}
@@ -149,7 +153,8 @@ A mode of behaviour or a property which is \textbf{particular} to an (few) indiv
 %%%%%%%%%%%%%
 
 \begin{frame}
-  \frametitle{MWE's \exidio{X-factor}{special quality}}
+  \frametitle{Major idiosyncrasy in MWEs}
+%  \frametitle{MWE's \exidio{X-factor}{special quality}}
 
 %\begin{scriptsize}
 
@@ -158,10 +163,12 @@ A mode of behaviour or a property which is \textbf{particular} to an (few) indiv
    \item The meaning of a MWE is surprising, given the meanings of its component words
       \begin{itemize}
       \item[]\lang{EN} \exidio{to \lex{pull} one's \lex{leg}}{to tease someone playfully}
-      \item[]\lang{IT} \exlitidio{\lex{lasciar perdere}}{to let lose}{to give up}
+%      \item[]\lang{IT} \exlitidio{\lex{lasciar perdere}}{to let lose}{to give up}
       \end{itemize}
    \end{itemize}
 \end{block}
+
+\pause
 
 \begin{block}{Challenge}
 Semantic non-compositionality is \textbf{hard to test directly}.
@@ -207,35 +214,35 @@ A MWE is \textbf{less flexible} than a regular construction of the same syntacti
 
 %%%%%%%%%%%%%%%%
 \begin{frame} 
-\frametitle{Focus on \textbf{verbal} MWEs -- challenges}
+\frametitle{Focus on \textbf{verbal} MWEs -- some challenges}
 
 \begin{scriptsize}
 \begin{itemize}
 \item Discontinuity:
 	\begin{itemize}
 	\item[] \lang{EN} \ile{Trying hard to \textbf{bear} all these more or less important indications \textbf{in mind}}
-	\item[] \lang{DE} \ile{Klaus Kinkel (FDP) \textbf{ging} in seiner Würdigung des Mauerfalls zumindest auf den 9. November 1938 \textbf{ein}.}
+%	\item[] \lang{DE} \ile{Klaus Kinkel (FDP) \textbf{ging} in seiner Würdigung des Mauerfalls zumindest auf den 9. November 1938 \textbf{ein}.}
     	\end{itemize}
+%\item Ambiguity: idiomatic vs.~literal readings
+%	\begin{itemize}
+%	\item[] \lang{EN} \exidio{she \lex{takes the cake}}{she is the most outstanding} vs. \ile{she takes the cake}
+%	\end{itemize}
+\item Interleaving:
+   	\begin{itemize}
+%	\item[] \lang{EN} \ile{\underline{\lex{take}} a \lex{walk} and then a long \lex{shower}} (coordination)
+	\item[] \lang{EN} \ile{\lex{take} the fact that I \underline{\lex{gave up}} \lex{into account}} %(interleaving)
+%	\item[] \lang{EN} \ile{\lex{\underline{let} the cat \underline{out} of the bag}} (nesting)
+	\end{itemize}
+\item Multiword tokens
+	\begin{itemize}
+%	\item[] \lang{ES}  \exlitidio{\lex{abstener}|\lex{se}}{abstain oneself}{abstain} vs. \ile{me abstengo}
+	\item[] \lang{DE}  \exlitidio{\lex{auf}|\lex{machen}}{out|make}{open} vs. \ile{macht auf}
+	\end{itemize}
 \item Flexibility: morphological, syntactic, lexical
 	\begin{itemize}
 	\item[] \lang{EN} \ile{he \lex{broke} my \lex{fall}} vs.~\ile{both of my \lex{falls} were hard to \lex{break}}
 	\end{itemize}
-\item Ambiguity: idiomatic vs.~literal readings
-	\begin{itemize}
-	\item[] \lang{EN} \exidio{she \lex{takes the cake}}{she is the most outstanding} vs. \ile{she takes the cake}
-	\end{itemize}
-\item Overlaps:
-   	\begin{itemize}
-	\item[] \lang{EN} \ile{\underline{\lex{take}} a \lex{walk} and then a long \lex{shower}} (coordination)
-	\item[] \lang{EN} \ile{\lex{take} the fact that I \underline{\lex{gave up}} \lex{into account}} (interleaving)
-	\item[] \lang{EN} \ile{\lex{\underline{let} the cat \underline{out} of the bag}} (nesting)
-	\end{itemize}
-\item Multiword tokens
-	\begin{itemize}
-	\item[] \lang{ES}  \exlitidio{\lex{abstener}|\lex{se}}{abstain oneself}{abstain} vs. \ile{me abstengo}
-	\item[] \lang{DE}  \exlitidio{\lex{auf}|\lex{machen}}{out|make}{open} vs. \ile{macht auf}
-	\end{itemize}
-\item Different languages $\Rightarrow$ different behavior, linguistic traditions\ldots
+%\item Different languages $\Rightarrow$ different behavior, linguistic traditions\ldots
 \end{itemize}
 \end{scriptsize}
 
@@ -246,14 +253,16 @@ A MWE is \textbf{less flexible} than a regular construction of the same syntacti
 \frametitle{Neutralizing flexibility}
 
 \begin{block}{Canonical form}
-Least syntactically marked syntactic variant which preserves the idiomatic reading (active voice is less marked then passive, etc.)
+%Least syntactically marked syntactic variant which preserves the idiomatic reading (active voice is less marked then passive, etc.)
+Least syntactically marked syntactic variant which preserves the idiomatic reading.\\
+{\tiny finite verb $<_m$ infinitive/participle; active voice $<_m$ passive v.; non-negated form $<_m$ negated f.; no extraction $<_m$ extraction, \ldots ($<_m$ = less marked than)}
 
+\setlength{\tabcolsep}{0.3mm}
 \begin{tabular}{ccc}
-\includegraphics[width=.45\textwidth]{Images/series-of-visits-paid} & 
+\includegraphics[scale=0.8]{Images/pull-strings-idio-pass-sent-short.pdf} & 
 $\Longrightarrow$ &
-\includegraphics[width=.25\textwidth]{Images/pay-visit}
+\includegraphics[scale=0.8]{Images/pull-strings-idio-act-sent-short.pdf}  %\\
 \end{tabular}
-
 \end{block}
 
 \begin{block}{}
@@ -276,7 +285,7 @@ Canonical forms are useful for \textbf{formalizing} the morpho-syntactic propert
 
 %%%%%%%%%%%%%
 \begin{frame}
-  \frametitle{PARSEME annotation guidelines \textcolor{magenta}{{\scriptsize (\url{https://parsemefr.lis-lab.fr/parseme-st-guidelines/1.2})}}}
+  \frametitle{PARSEME annotation guidelines \textcolor{magenta}{{\scriptsize (\url{https://parsemefr.lis-lab.fr/parseme-st-guidelines/1.3})}}}
 
 %\begin{scriptsize}
 
@@ -298,7 +307,7 @@ Canonical forms are useful for \textbf{formalizing} the morpho-syntactic propert
 %%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
   \vspace*{-5pt}
-  \frametitle{VMWE typology (v. 1.2)}
+  \frametitle{VMWE typology (v. 1.3)}
 
 \begin{scriptsize}
 \begin{block}{}
@@ -358,7 +367,11 @@ Canonical forms are useful for \textbf{formalizing} the morpho-syntactic propert
 
 %%%%%%%%%%%%%%%%
 \begin{frame} 
+%\frametitle{Annotation exercise 1\\
+%{\scriptsize \textcolor{magenta}{\url{https://mwe.phil.hhu.de/}}} \\
+%{\scriptsize \textcolor{magenta}{\url{http://parsemefr.lif.univ-mrs.fr/parseme-st-guidelines/1.3}}}
 \frametitle{Annotation exercise 1 \href{https://mwe.phil.hhu.de/}{\beamergotobutton{[FLAT]}}\href{http://parsemefr.lif.univ-mrs.fr/parseme-st-guidelines/1.3}{\beamergotobutton{[guidelines]}}}
+
 
 \ile{the fate of the republic rests on your shoulders} (sentence 4)
 
