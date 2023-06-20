@@ -1,0 +1,171 @@
+\documentclass[10pt, compress, aspectratio=169]{beamer}
+
+% DZ: My MikTeX freezes when trying to compile the source with the metropolis theme.
+%\usetheme{metropolis}
+\usepackage{appendixnumberbeamer}
+%\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{
+  \hfill%
+  \usebeamercolor[fg]{page number in head/foot}%
+  \usebeamerfont{page number in head/foot}%
+  \setbeamertemplate{page number in head/foot}[framenumber]%
+  \usebeamertemplate*{page number in head/foot}\kern3.5em\vskip10pt%
+}
+
+\usepackage{tikz-dependency}
+\usepackage{caption}
+\usepackage{booktabs}
+%\usepackage{fontspec}
+\usepackage[scale=2]{ccicons}
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+
+\usepackage{xspace}
+\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+
+% commands from the paper
+%\newfontfamily\gtfont[Scale=1.1,Letters=SmallCaps]{Linux Libertine O}
+\newcommand{\udtag}[1]{{\ll \textsc{#1}}}
+\newcommand{\gtlabel}[1]{{\gtfont #1}}
+\newcommand{\udlabel}[1]{{\tt #1}}
+%\newfontfamily\udfont[Scale=0.9,Letters=SmallCaps]{Linux Libertine O}
+\newcommand{\utag}[1]{{\udfont#1}}
+\newcommand{\ufeat}[1]{{\udfont#1}}
+\newcommand{\tgl}[1]{{\em #1}}
+% commands from the paper
+
+
+
+\title{Tutorial on Universal Dependencies\\
+{\small Annotation Exercise}}
+\date{\today}
+\date{}
+\author{%
+Marie-Catherine de Marneffe\inst{1}
+\and
+\textbf{Joakim Nivre}\inst{2}
+\and
+Daniel Zeman\inst{3}
+\vspace{0.5cm}
+}
+\institute[shortinst]{%
+\inst{1}
+FNRS,
+Université catholique de Louvain, Belgium
+\and
+\inst{2}
+Department of Linguistics and Philology,
+Uppsala University, Sweden
+\and
+\inst{3}
+Institute of Formal and Applied Linguistics,
+Charles University, Prague, Czechia
+}
+\logo{\hfill\includegraphics[height=1.25cm]{images/ud-logo-transp.png}}
+
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{Sentence to Annotate}
+\begin{flushright}
+\vspace{-1cm}\textcolor{blue}{https://universaldependencies.org/guidelines}
+\end{flushright}
+
+\vspace{1cm}
+\centering
+\fbox{
+If the weather is nice, I think we will throw a party in the garden of their house.
+}
+
+\bigskip
+\bigskip
+\begin{itemize}
+\item Focus on syntactic relations and part-of-speech tags
+\item Identify clauses and and their relations
+\item For each clause:
+\begin{itemize}
+\item Identify dependents of the predicate
+\item Identify additional modifiers and function word dependents 
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\centering
+\scalebox{0.55}{
+\begin{dependency}[edge style=thick, label style={thick, font=\bfseries}]
+   \begin{deptext}[column sep=0.1cm, font=\bfseries]
+If \&
+the \&
+weather \&
+is \&
+nice \&
+, \&
+I \&
+think \& 
+we \&
+will \&
+throw \&
+a \&
+party \&
+in \&
+the \&
+garden \&
+of \& 
+their \&
+house \&
+. \\[0.25cm]
+\textcolor<-3>{white}{SCONJ} \& \textcolor<-4>{white}{DET} \& \textcolor<-3>{white}{NOUN} \& \textcolor<-3>{white}{AUX} \& \textcolor<-1>{white}{ADJ} \& 
+\textcolor<-3>{white}{PUNCT} \& \textcolor<-2>{white}{PRON} \& \textcolor<-1>{white}{VERB} \& \textcolor<-5>{white}{PRON} \& \textcolor<-5>{white}{AUX} \& \textcolor<-1>{white}{VERB} \& \textcolor<-6>{white}{DET} \& \textcolor<-5>{white}{NOUN} \& \textcolor<-7>{white}{ADP} \& \textcolor<-7>{white}{DET} \& \textcolor<-5>{white}{NOUN} \& 
+\textcolor<-8>{white}{ADP} \& \textcolor<-8>{white}{PRON} \& \textcolor<-7>{white}{NOUN} \& \textcolor<-2>{white}{PUNCT} \\
+\end{deptext}
+\visible<4>{\depedge[edge unit distance=2.3ex, edge style=blue]{5}{1}{mark}}
+\visible<5->{\depedge[edge unit distance=2.3ex]{5}{1}{mark}}
+\visible<5>{\depedge[edge style=blue]{3}{2}{det}}
+\visible<6->{\depedge{3}{2}{det}}
+\visible<4>{\depedge[edge unit distance=3.1ex, edge style=blue]{5}{3}{nsubj}}
+\visible<5->{\depedge[edge unit distance=3.1ex]{5}{3}{nsubj}}
+\visible<4>{\depedge[edge style=blue]{5}{4}{cop}}
+\visible<5->{\depedge{5}{4}{cop}}
+\visible<2>{\depedge[edge unit distance=2ex, edge style=blue]{8}{5}{advcl}}
+\visible<3->{\depedge[edge unit distance=2ex]{8}{5}{advcl}}
+\visible<4>{\depedge[edge style=blue]{5}{6}{punct}}
+\visible<5->{\depedge{5}{6}{punct}}
+\visible<3>{\depedge[edge style=blue]{8}{7}{nsubj}}
+\visible<4->{\depedge{8}{7}{nsubj}}
+\visible<2>{\deproot[edge unit distance=5.8ex, edge style=blue]{8}{root}}
+\visible<3->{\deproot[edge unit distance=5.8ex]{8}{root}}
+\visible<6>{\depedge[edge style=blue]{11}{9}{nsubj}}
+\visible<7->{\depedge{11}{9}{nsubj}}
+\visible<6>{\depedge[edge style=blue]{11}{10}{aux}}
+\visible<7->{\depedge{11}{10}{aux}}
+\visible<2>{\depedge[edge style=blue]{8}{11}{ccomp}}
+\visible<3->{\depedge{8}{11}{ccomp}}
+\visible<7>{\depedge[edge style=blue]{13}{12}{det}}
+\visible<8->{\depedge{13}{12}{det}}
+\visible<6>{\depedge[edge style=blue]{11}{13}{obj}}
+\visible<7->{\depedge{11}{13}{obj}}
+\visible<8>{\depedge[edge style=blue]{16}{14}{case}}
+\visible<9->{\depedge{16}{14}{case}}
+\visible<8>{\depedge[edge style=blue]{16}{15}{det}}
+\visible<9->{\depedge{16}{15}{det}}
+\visible<6>{\depedge[edge unit distance=1.8ex, edge style=blue]{11}{16}{obl}}
+\visible<7->{\depedge[edge unit distance=1.8ex]{11}{16}{obl}}
+\visible<9>{\depedge[edge style=blue]{19}{17}{case}}
+\visible<10>{\depedge{19}{17}{case}}
+\visible<9>{\depedge[edge style=blue]{19}{18}{nmod:poss}}
+\visible<10>{\depedge{19}{18}{nmod:poss}}
+\visible<8>{\depedge[edge style=blue]{16}{19}{nmod}}
+\visible<9->{\depedge{16}{19}{nmod}}
+\visible<3>{\depedge[edge unit distance=1ex, edge style=blue]{8}{20}{punct}}
+\visible<4->{\depedge[edge unit distance=1ex]{8}{20}{punct}}
+\end{dependency}
+}
+
+\end{frame}
+
+\end{document}

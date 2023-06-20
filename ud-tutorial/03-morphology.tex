@@ -1,0 +1,1127 @@
+\documentclass[10pt, compress, aspectratio=169]{beamer}
+
+% DZ: My MikTeX freezes when trying to compile the source with the metropolis theme.
+%\usetheme{metropolis}
+\usepackage{appendixnumberbeamer}
+
+% Is the following needed at all?
+\usepackage[scale=2]{ccicons} % Creative Commons icons
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+\usepackage{xspace} % define commands that appear not to eat spaces
+\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+
+\usepackage{tikz-dependency}
+\usepackage{tabularx}
+\usepackage{fontspec}
+\usepackage[normalem]{ulem} % \sout (strike through line)
+\usepackage{comment} % for multi-line comments \begin{comment} ... \end{comment}
+% Hide selected slides to meet presentation time constraints.
+% Unhide them for discussion and for the web archive after the tutorial.
+\newif\ifExtraSlides
+%\ExtraSlidestrue % show extra slides
+
+
+
+% The Metropolis style defines \alert as orange color. It is not as visible as needed.
+\renewcommand{\alert}[1]{\textcolor{red}{\textbf{#1}}}
+% Features in sentence analyses
+% \tiny\color{red} seems too small on these slides
+% \tiny - \footnotesize - \small
+\newcommand{\upos}[1]{\textbf{\color{blue}#1}}
+\newcommand{\feat}[1]{\textbf{\footnotesize\color{red}#1}}
+% Highlight a feature
+\newcommand{\hlfeat}[1]{{\footnotesize\color{purple}\underline{#1}}}
+% Highlight and strikethrough a feature we want to avoid
+\newcommand{\badfeat}[1]{{\footnotesize\color{purple}\sout{#1}}}
+
+% Computer Modern Sans Serif seems to be the default beamer font, meaning that
+% all our English texts are rendered with it. It also contains Cyrillic letters,
+% so let's set it up for Cyrillic as well. (It is available as "CMU Sans Serif"
+% on my system.)
+\newfontfamily\rufont[Script=Cyrillic]{CMU Sans Serif}
+\newfontfamily\arfont[Script=Arabic]{Arial Unicode MS}
+%\newfontfamily\arfont[Script=Arabic]{DejaVu Sans}
+\newfontfamily\jafont[Script=CJK]{Noto Sans CJK TC}
+\newcommand{\ar}[1]{{\arfont #1}}
+\newcommand{\ja}[1]{{\jafont #1}}
+\newcommand{\zh}[1]{{\jafont #1}}
+\newcommand{\ru}[1]{{\rufont #1}}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{
+  \hfill%
+  \usebeamercolor[fg]{page number in head/foot}%
+  \usebeamerfont{page number in head/foot}%
+  \setbeamertemplate{page number in head/foot}[framenumber]%
+  \usebeamertemplate*{page number in head/foot}\kern3.5em\vskip10pt%
+}
+
+
+
+\title{Tutorial on Universal Dependencies\\
+{\small Word segmentation and morphological annotation}}
+\date{\today}
+\date{}
+\author{%
+Marie-Catherine de Marneffe\inst{1}
+\and
+Joakim Nivre\inst{2}
+\and
+\textbf{Daniel Zeman}\inst{3}
+\vspace{0.5cm}
+}
+\institute[shortinst]{%
+\inst{1}
+FNRS,
+Université catholique de Louvain, Belgium
+\and
+\inst{2}
+Department of Linguistics and Philology,
+Uppsala University, Sweden
+\and
+\inst{3}
+Institute of Formal and Applied Linguistics,
+Charles University, Prague, Czechia
+}
+\logo{\hfill\includegraphics[height=1.25cm]{images/ud-logo-transp.png}}
+
+
+
+\begin{document}
+
+\maketitle
+
+
+
+\begin{frame}{Morphological Annotation in UD}
+\begin{itemize}
+\item Tokenization / word segmentation
+\bigskip
+\item Lemmatization
+\item Universal part-of-speech tags
+\item Universal features
+\item Language-specific features
+% Not enough time. Leaving Errors/Typos as backup slides only.
+%\bigskip
+%\item Errors in text
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Tokenization}
+\textit{“María, I love you!” Juan exclaimed.}
+
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[column sep=3pt, font=\bfseries]
+«¡María, \& te \& amo!», \& exclamó \& Juan. \\[0.1cm]
+X \& PRON \& X \& VERB \& X \\
+\end{deptext}
+\end{dependency}
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+« \& ¡ \& María \& , \& te \& amo \& ! \& » \& , \\[0.1cm]% \& exclamó \& Juan \& . \\[0.1cm]
+PUNCT \& PUNCT \& PROPN \& PUNCT \& PRON \& VERB \& PUNCT \& PUNCT \& PUNCT \\% \& VERB \& PROPN \& PUNCT \\
+\end{deptext}
+%\depedge[edge style=red, thick]{2}{1}{det}
+%\depedge[edge style=blue, thick]{4}{2}{nsubj:pass}
+%\depedge[edge style=red, thick]{4}{3}{aux:pass}
+%\deproot[edge style=blue, thick, edge unit distance=3ex]{4}{root}
+%\depedge[edge style=red, thick, edge unit distance=1.8ex]{7}{5}{case}
+%\depedge[edge style=red, thick, edge unit distance=1ex]{7}{6}{det}
+%\depedge[edge style=blue, thick, edge unit distance=2.1ex]{4}{7}{obl}
+%\depedge[edge style=thick, edge unit distance=3ex]{4}{8}{punct}
+\end{dependency}
+\begin{itemize}
+\item Classic tokenization:
+\begin{itemize}
+\item Separate punctuation from words
+\item Recognize certain clusters of symbols like ``...''
+\item Perhaps keep together things like \url{user@mail.x.edu}
+\end{itemize}
+%\item «¡María, te amo!», exclamó Juan.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Word Segmentation}
+\textit{Let's go to the sea.}
+
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[column sep=3pt, font=\bfseries]
+Vámonos \& al \& mar \& . \\[0.1cm]
+VERB? \& X \& NOUN \& PUNCT \\
+\end{deptext}
+\end{dependency}
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+Vamos \& nos \& a \& el \& mar \& . \\[0.1cm]
+VERB \& PRON \& ADP \& DET \& NOUN \& PUNCT \\
+\end{deptext}
+\end{dependency}
+\begin{itemize}
+\item \alert{\textbf{Syntactic word}} vs. orthographic word
+\item \alert{\textbf{Multi-word tokens}}
+\item Two-level scheme:
+\begin{itemize}
+\item Tokenization (low level, punctuation, concatenative)
+\item Word segmentation (higher level, not necessarily concatenative)
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Word Segmentation}
+% Greg Pringle (the article about words in UD Japanese, http://www.cjvlang.com/Spicks/udjapanese.html):
+% The most celebrated definition is Bloomfield's, which defined words as 'minimal free forms', that is, the smallest meaningful units of speech that can stand by themselves. Under this definition, play and played are both words because they can stand by themselves, while ­ed is not a word because it cannot.
+% Linguists later fine­tuned the definition of words with further distributional criteria:
+% 'Positional mobility (syntagmatic mobility)': the word is free to be used at different places in the sentence. For example, John will go can be transformed into Will John go?, indicating that will, John, and go are three separate words.
+% 'Internal stability (internal immutability)': In contrast with the positional mobility that the word enjoys, morphemes within a word are fixed in order. For example, played is a stable unit that does not permit rearrangement as ed-play.
+% 'Uninterruptability': it is not possible to insert anything between the morphemes of a word. For instance, it is not possible to insert anything between play and ­ed (e.g., play-be-ed).
+% Whatever criteria are used, difficulties of interpretation and counterexamples can inevitably be found in different languages. Bloomfield himself noted that English the is not a 'minimal free form' because it is not uttered alone, except in citation form. He dealt with this by saying that the can be substituted with other forms, such as that, which are inarguably words according to his criterion. The other distributional criteria also have problems. For example, German separable verbs like abfahren 'to depart' fail to satisfy the criterion of uninterruptability since they can be separated into fährt ... ab 'departs' in actual use. Other exceptions have been found from other languages.
+\begin{itemize}
+\item Lexicalist hypothesis:
+  \begin{itemize}
+  \item Words (not morphemes) are the basic units in syntax
+  \item Words enter in dependency relations
+  \item Words are forms of lemmas and have morphological features
+  \end{itemize}
+\bigskip
+\item Orthographic vs. syntactic word
+  \begin{itemize}
+  \item Syntactically autonomous part of orthographic word
+  \item Contractions \textit{(al = a + el)}
+  \item Clitics \textit{(vámonos = vamos + nos)}
+    \begin{itemize}
+    \item \textit{¿A qué hora \textcolor{blue}{nos} \textcolor{red}{vamos} mañana?}
+    \item \textit{\textcolor{blue}{Nos} despertamos a las cinco.}\\``We wake up at five.''
+    \item \textit{Nuestro guía \textcolor{blue}{nos} despierta a las cinco.}\\``Our guide wakes us up at five.''
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Contractions in Arabic}
+\textit{He abdicated in favour of his son Baudouin.}
+
+% ar: الملك ليوبولد الثاني يتنازل عن العرش لابنه بودوان
+% ar: al-maliku lywbwld aṯ-ṯānī yatanāzalu ʿan al-ʿarši li ibni hi (l-ibni-hi) bwdwAn
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+%الملك \& ليوبولد \& الثاني \&
+\ar{يتنازل} \& \ar{عن} \& \ar{العرش} \& \alert{\ar{لابنه}} \& \ar{بودوان}
+\\[0.1cm]
+yatanāzalu \& ʿan \& al-ʿarši \& \alert{li+ibni+hi} \& būdūān \\
+surrendered \& on \& the throne \& \alert{to son his} \& Baudouin \\
+VERB \& ADP \& NOUN \& \alert{ADP+NOUN+PRON} \& PROPN \\
+\end{deptext}
+\end{dependency}
+% This is traditionally called tokenization in Arabic processing
+% but it has to be done together with morphological analysis.
+% Question: why don't we separate the article ``al-''?
+% What is the decisive factor for treating it just as morpho-feature?
+% Default: keep orthographic word boundaries (if present in the language).
+% Hard time assigning POS tag? Split.
+% Hard time assigning dependency relation? Don't split. (Also show fixed and compound somewhere.)
+% Does a variant of the morpheme occur as a separate word elsewhere in the language? Split.
+\end{frame}
+
+
+
+\begin{frame}{Chinese Word Segmentation}
+\textit{We are now in Valencia.}
+
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+\zh{現在我們在瓦倫西亞。} \\
+Xiàn zài wǒ men zài wǎ lún xī yǎ. \\
+We are now in Valencia. \\
+\end{deptext}
+\end{dependency}
+
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+\zh{現在} \& \zh{我們} \& \zh{在} \& \zh{瓦倫西亞} \& \zh{。} \\
+Xiànzài \& wǒmen \& zài \& Wǎlúnxīyǎ \& . \\
+Now \& we \& in \& Valencia \& . \\
+\upos{ADV} \& \upos{PRON} \& \upos{ADP} \& \upos{PROPN} \& \upos{PUNCT} \\
+\end{deptext}
+\end{dependency}
+% This can be expressed in CoNLL-U as syntactic word segmentation or just
+% at the tokenization level (it is concatenative), although the algorithm
+% to do it is by no means trivial.
+\end{frame}
+
+
+
+\begin{frame}{Words in Japanese}
+\textit{I went to the beauty salon of Kyōdō [, Beyond-R.]}
+
+%# sent_id = train-s102
+%# text = 経堂の美容室ビヨンドアールに行ってきました。
+% Kyōdō no miyōshitsu biyondoāru ni ittekimashita.
+% I went to the beauty salon of Kyōdō, Beyond-R.
+%1	経堂	経堂	NOUN	_	_	4	nmod	_	SpaceAfter=No
+%2	の	の	ADP	_	_	1	case	_	SpaceAfter=No
+%3	美容室	美容室	NOUN	_	_	4	compound	_	SpaceAfter=No
+%4	ビヨンドアール	ビヨンドアール	PROPN	_	_	6	iobj	_	SpaceAfter=No
+%5	に	に	ADP	_	_	4	case	_	SpaceAfter=No
+%6	行っ	行く	VERB	_	_	0	root	_	SpaceAfter=No
+%7	て	て	SCONJ	_	_	6	mark	_	SpaceAfter=No
+%8	き	来る	AUX	_	_	6	aux	_	SpaceAfter=No
+%9	まし	ます	AUX	_	_	6	aux	_	SpaceAfter=No
+%10	た	た	AUX	_	_	6	aux	_	SpaceAfter=No
+%11	。	。	PUNCT	_	_	6	punct	_	SpaceAfter=No
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+\zh{経堂} \& \zh{の} \& \zh{美容室} \& \zh{に} \& \zh{行っ} \& \zh{て} \& \zh{き} \& \zh{まし} \& \zh{た} \\
+Kyōdō \& no \& miyōshitsu \& ni \& it \& te \& ki \& mashi \& ta \\
+\zh{経堂} \& \zh{の} \& \zh{美容室} \& \zh{に} \& \zh{行く} \& \zh{て} \& \zh{来る} \& \zh{ます} \& \zh{た} \\
+Kyōdō \& of \& beauty-salon \& to \& go \& CONV \& come \& will \& PAST \\
+\upos{PROPN} \& \upos{ADP} \& \upos{NOUN} \& \upos{ADP} \& \upos{VERB} \& \upos{SCONJ} \& \upos{AUX} \& \upos{AUX} \& \upos{AUX} \\
+\end{deptext}
+\depedge{3}{1}{nmod}
+\depedge{1}{2}{case}
+\depedge{5}{3}{obl}
+\depedge{3}{4}{case}
+\depedge{5}{9}{aux}
+\depedge{5}{8}{aux}
+\depedge{5}{7}{aux}
+\depedge{5}{6}{mark}
+\end{dependency}
+\end{frame}
+
+
+
+\begin{frame}{Words in Japanese}
+\textit{I went to the beauty salon of Kyōdō [, Beyond-R.]}
+
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+\zh{経堂} \& \zh{の} \& \zh{美容室} \& \zh{に} \& \zh{行って} \& \zh{きました} \\
+Kyōdō \& no \& miyōshitsu \& ni \& itte \& kimashita \\
+\zh{経堂} \& \zh{の} \& \zh{美容室} \& \zh{に} \& \zh{行く} \& \zh{来る} \\
+Kyōdō \& of \& beauty-salon \& to \& going \& come \\
+\upos{PROPN} \& \upos{ADP} \& \upos{NOUN} \& \upos{ADP} \& \upos{VERB} \& \upos{VERB} \\
+\& \& \& \& \feat{VerbForm=Conv} \& \feat{VerbForm=Fin} \\
+\& \& \& \& \& \feat{Tense=Past} \\
+\& \& \& \& \& \feat{Polite=Form} \\
+\end{deptext}
+\depedge{3}{1}{nmod}
+\depedge{1}{2}{case}
+\depedge{5}{3}{obl}
+\depedge{3}{4}{case}
+\depedge{6}{5}{advcl}
+\end{dependency}
+\end{frame}
+
+
+
+\begin{frame}{Words in Japanese}
+\textit{I went to the beauty salon of Kyōdō [, Beyond-R.]}
+
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+\zh{経堂の} \& \zh{美容室に} \& \zh{行って} \& \zh{きました} \\
+Kyōdōno \& miyōshitsuni \& itte \& kimashita \\
+\zh{経堂} \& \zh{美容室} \& \zh{行く} \& \zh{来る} \\
+of-Kyōdō \& to-beauty-salon \& going \& come \\
+\upos{PROPN} \& \upos{NOUN} \& \upos{VERB} \& \upos{VERB} \\
+\feat{Case=Gen} \& \feat{Case=Dat} \& \feat{VerbForm=Conv} \& \feat{VerbForm=Fin} \\
+\& \& \& \feat{Tense=Past} \\
+\& \& \& \feat{Polite=Form} \\
+\end{deptext}
+\depedge{2}{1}{nmod}
+\depedge{3}{2}{obl}
+\depedge{4}{3}{advcl}
+\end{dependency}
+\end{frame}
+
+
+
+% DZ: I introduced this example to show that Turkish segments into empty words.
+% I am happy to realize that it is an error that will be fixed.
+% This slide thus becomes superfluous.
+\begin{comment}{Derivation vs. Dependencies in Turkish}
+\textit{bu otuzaltı milyon [dörtyüzseksensekiz bin] liralık zam anlamına gelecek}\\
+``This will mean a raise of thirty-six million [four hundred and eight thousand] liras.''
+
+% bu otuzaltı milyon dörtyüzseksensekiz bin liralık zam anlamına gelecek
+% this thirty-six million means four hundred and eight thousand liras raise
+%8	bu	bu	DET	Det	_	16	nsubj	_	_
+%9	otuzaltı	otuzaltı	NUM	ANum	NumType=Card	14	nummod	_	_
+%10	milyon	milyon	NUM	ANum	NumType=Card	9	flat	_	_
+%11	dörtyüzseksensekiz	dörtyüzseksensekiz	NUM	ANum	NumType=Card	9	flat	_	_
+%12	bin	bin	NUM	ANum	NumType=Card	9	flat	_	_
+%13-14	liralık	_	_	_	_	_	_	_	_
+%13	_	lira	NOUN	Noun	Case=Nom|Number=Sing|Person=3	9	flat	_	_
+%14	liralık	_	ADJ	Adj	_	15	amod	_	_
+%15	zam	zam	NOUN	Noun	Case=Nom|Number=Sing|Person=3	16	obj	_	_
+%16	anlamına	anlam	NOUN	Noun	Case=Dat|Number=Sing|Number[psor]=Sing|Person=3|Person[psor]=3	0	root	_	_
+%17	gelecek	gel	VERB	Verb	Aspect=Perf|Mood=Ind|Number=Sing|Person=3|Polarity=Pos|Tense=Fut	16	compound	_	SpaceAfter=No
+
+% Fran:
+% And I talked with Umut and we think that the analysis is wrong. The translation you have is right, but some of the analysis is not... I realise this is "straight from the treebank", but some treebanks have errors :/
+
+% We think that it should be something like:
+
+%1        Bu        bu        10        nsubj
+%2        otuzaltı  otuzaltı   6        nummod
+%3        milyon    milyon     2        flat
+%4        dörtyüzseksensekiz        dörtyüzseksensekiz        2        flat
+%5        bin       bin        2        flat
+%6-7      liralık        _        _        _
+%6        lira       lira      8        nmod
+%7        lık        lik       6        case
+%8        zam        zam       9        obj
+%9        anlamına   anlam    10        compound
+%10       gelecek    gel       0        root
+%11       .          .        10        punct
+
+% (Although I remain unconvinced with how the numerals are done)
+
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+bu \& otuzaltı \& milyon \& \textcolor{red}{lira} \& \textcolor{red}{lık} \& zam \& anlamına \& gelecek \\
+bu \& otuzaltı \& milyon \& \textcolor{red}{lira} \& \textcolor{red}{lik} \& zam \& anlam \& gel \\
+this \& 36 \& million \& \textcolor{red}{liras} \& \textcolor{red}{ADJ} \& raise \& mean \& will \\
+\upos{DET} \& \upos{NUM} \& \upos{NUM} \& \upos{NOUN} \& \upos{ADP} \& \upos{NOUN} \& \upos{NOUN} \& \upos{VERB} \\
+\end{deptext}
+% default edge unit distance=3ex, height is this times word distance
+\depedge[edge unit distance=1.3ex]{8}{1}{nsubj}
+\depedge{2}{3}{flat}
+\depedge[edge style=red, thick]{4}{2}{nummod}
+\depedge{4}{5}{case}
+\depedge{6}{4}{nmod}
+\depedge{7}{6}{obj}
+\depedge{8}{7}{compound}
+\end{dependency}
+\end{comment}
+
+
+
+\begin{frame}{Vietnamese: Words with Spaces}
+% "Tất cả đường bêtông nội đồng là thành quả nhà nước và nhân dân cùng làm" - anh tự hào.
+% Google Translate: "All the concrete infield road is the result of state and people working together" - he boasts.
+\textit{All the concrete country roads are the result of\dots}
+
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+\textcolor{red}{Tất cả} \& đường \& \textcolor{blue}{bêtông} \& \textcolor{red}{nội đồng} \& là \& \textcolor{red}{thành quả} \& \dots \\
+All \& road \& concrete \& country \& is \& achievement \& \dots \\
+PRON \& NOUN \& NOUN \& NOUN \& AUX \& NOUN \& PUNCT \\
+\end{deptext}
+\end{dependency}
+
+\begin{itemize}
+\item Spaces delimit monosyllabic morphemes, not words.
+\item Multiple syllables without space occur in loanwords \textit{(bêtông).}
+\item Spaces are allowed to occur word-internally in Vietnamese UD.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Numbers with Spaces}
+%# sent_id = fr-ud-train_01357
+\begin{tabular}{l l l l l l l l}
+\# & \multicolumn{7}{l}{text = Il touche environ 100 000 sesterces par an.} \\
+1 & Il & il & PRON & \dots & 2 & nsubj & \_ \_ \\
+2 & touche & toucher & VERB & \dots & 0 & root & \_ \_ \\
+3 & environ & environ & ADV & \dots & 4 & advmod & \_ \_ \\
+4 & \textcolor{red}{100 000} & \textcolor{red}{100 000} & NUM & \dots & 5 & nummod & \_ \_ \\
+5 & sesterces & sesterce & NOUN & \dots & 2 & obj & \_ \_ \\
+6 & par & par & ADP & \dots & 7 & case & \_ \_ \\
+7 & an & an & NOUN & \dots & 2 & obl & \_ SpaceAfter=No \\
+8 & . & . & PUNCT & \dots & 2 & punct & \_ \_ \\
+\end{tabular}
+\end{frame}
+
+
+
+% DZ: Removing the CoNLL-U representation.
+% It should be enough to show the dependency tree, see the next slide.
+\begin{comment}
+\begin{frame}{Fixed Expressions}
+One syntactic word spans several orthographic words?
+
+%# sent_id = train-s452
+\begin{tabular}{l l l l l l l l}
+\# & \multicolumn{7}{l}{text = Bin nach wie vor sehr zufrieden.} \\
+\# & \multicolumn{7}{l}{text\_en = I am still very satisfied.} \\
+1 & Bin & sein & AUX & \dots & 6 & cop & \_ \_ \\
+2 & nach & nach & ADP & \dots & 6 & obl & \_ \_ \\
+3 & wie & wie & ADV & \dots & 2 & \textcolor{red}{fixed} & \_ \_ \\
+4 & vor & vor & ADP & \dots & 2 & \textcolor{red}{fixed} & \_ \_ \\
+5 & sehr & sehr & ADV & \dots & 6 & advmod & \_ \_ \\
+6 & zufrieden & zufrieden & ADJ & \dots & 0 & root & \_ SpaceAfter=No \\
+7 & . & . & PUNCT & \dots & 6 & obl & \_ \_ \\
+\end{tabular}
+\end{frame}
+\end{comment}
+
+
+
+\begin{frame}{Fixed Expressions}
+One syntactic word spans several orthographic words?
+
+\textit{I am still very satisfied.}
+
+\begin{dependency}[label style={thick, font=\bfseries}]
+  \begin{deptext}[font=\bfseries]
+  Bin \& nach \& wie \& vor \& sehr \& zufrieden \& . \\
+  Am \& after \& like \& before \& very \& satisfied \& . \\
+  \upos{AUX} \& \upos{ADP} \& \upos{ADV} \& \upos{ADP} \& \upos{ADV} \& \upos{ADJ} \& \upos{PUNCT} \\
+  \end{deptext}
+  \depedge[edge unit distance=2.4ex]{6}{1}{cop}
+  \depedge[edge unit distance=2.25ex]{6}{2}{obl}
+  \depedge[edge style=red, thick]{2}{4}{fixed}
+  \depedge[edge style=red, thick]{2}{3}{fixed}
+  \depedge{6}{5}{advmod}
+  \depedge{6}{7}{punct}
+\end{dependency}
+\end{frame}
+
+
+
+\begin{frame}{Word Segmentation Summary}
+\begin{itemize}
+\item When to split?
+  \begin{itemize}
+  \item Only part of the token involved in a relation to something outside the token? Split!
+  \item<2-> Hard time finding POS tag? Split!
+  \item<3-> Hard time finding dependency relation? Don't split!
+    \begin{itemize}
+    \item Or not hard time but the relation would be compound, flat, fixed or goeswith.
+    \end{itemize}
+  \item<4-> Border case? Keep orthographic words (if they exist).
+  \item<4-> \alert{Splitting clitics is not mandatory!}
+    \begin{itemize}
+    \item Just because something is clitic does not mean it cannot be
+        captured by features.
+    \end{itemize}
+  \end{itemize}
+\bigskip
+\item<5-> Words with spaces
+  \begin{itemize}
+  \item Vietnamese writing system
+  \item Very restricted set of exceptions (numbers)
+  \item Special relations elsewhere (\texttt{fixed}, \texttt{compound})
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Recoverability: CoNLL-U Format}
+\begin{tabular}{l l l l l l l l}
+\# & \multicolumn{7}{l}{text = Vámonos al mar.} \\
+\# & \multicolumn{7}{l}{text\_en = Let's go to the sea.} \\
+\textbf{ID} & \textbf{FORM} & \textbf{LEMMA} & \textbf{UPOS} & \dots & \multicolumn{2}{l}{\textbf{HEAD}} & \_ \textbf{MISC} \\
+\textcolor{red}{1-2} & \textcolor{red}{Vámonos} & \_ & \_   & \dots  & \_ & \_   & \_ \_ \\
+1 & Vamos     & ir & VERB & \dots  & 0  & root & \_ \_ \\
+2 & nos & nosotros & PRON & \dots  & 1  & obj  & \_ \_ \\
+\textcolor{red}{3-4} & \textcolor{red}{al} & \_      & \_   & \dots  & \_ & \_   & \_ \_ \\
+3 & a & a          & ADP  & \dots  & 5  & case & \_ \_ \\
+4 & el & el        & DET  & \dots  & 5  & det  & \_ \_ \\
+\only<2>{%
+\textcolor{purple}{\textbf{5-6}} & \textcolor{purple}{\textbf{mar.}} & \textcolor{purple}{\textbf{\_}} & \textcolor{purple}{\textbf{\_}} & \textcolor{purple}{\textbf{\dots}} & \textcolor{purple}{\textbf{\_}} & \textcolor{purple}{\textbf{\_}} & \textcolor{purple}{\textbf{\_ \_}} \\
+}%
+5 & mar & mar      & NOUN & \dots  & 1  & obl  & \_ \only<1>{\textcolor{red}{SpaceAfter=No}}\only<2>{\textcolor{purple}{\textbf{\_}}} \\
+6 & . & .          & PUNCT & \dots & 1  & punct & \_ \_ \\
+\end{tabular}
+\end{frame}
+
+
+
+\ifExtraSlides
+\begin{frame}{Tokenization vs. Multi-word Tokens}
+\begin{itemize}
+\item Parallelism among closely related languages
+  \begin{itemize}
+  \item ca: \textbf{\textcolor{red}{informar}-\textcolor{blue}{se} sobre el patrimoni cultural}
+  \item es: \textbf{\textcolor{red}{informar}\textcolor{blue}{se} sobre el patrimonio cultural}
+  \item en: \textit{learn about cultural heritage}
+  \end{itemize}
+\bigskip
+\item ca: L'únic que veig és => \textbf{\textcolor{blue}{L'} \textcolor{red}{únic} que veig és}
+\item en: don't => \textbf{\textcolor{red}{do} \textcolor{blue}{n't}}
+% And the form remains ``n't''. Lemma is ``not''.
+  % Let's not emphasize temporary inconsistencies too much. Hide this part.
+  %\begin{itemize}
+  %\item currently not multi-word token
+  %\item it should be MWT
+  %\item but commonly solved by tokenization
+  %\end{itemize}
+\bigskip
+\item No strict guidelines for tokenization (yet)
+  \begin{itemize}
+  \item UD English: \textbf{non-stop}, \textbf{post-war}: single-word tokens
+  \item UD Czech: \textbf{non-stop} would be split to three tokens
+  \end{itemize}
+\end{itemize}
+\end{frame}
+\fi
+
+
+
+\begin{frame}{Tokenization vs. Multi-word Tokens Summary}
+\begin{itemize}
+\item<1-> Punctuation involved? Low level!
+  \ifExtraSlides
+  {
+  \begin{itemize}
+  \item Exceptions: Spanish-Catalan parallelism.
+  \end{itemize}
+  }
+  \fi
+\bigskip
+\item<2-> Boundary between two letters? Typically high level.
+  \begin{itemize}
+  \item Exceptions: Chinese, Japanese.
+  % We hid the description of the inconsistency so we should not mention it here.
+  %\item And the current UD English practice with \textit{don't}.
+  \end{itemize}
+\bigskip
+\item<3-> Non-concatenative? High level!
+  % DZ: Hiding the question because there is no universally valid answer now
+  % (and this is a summary, so we should not put open questions here).
+  % Note that if we select different word forms we can make it concatenative:
+  % if ``can't'' is split to "ca" and "n't" (instead of "can" and "not"),
+  % it will be concatentative and solvable on the lower level of tokenization.
+  % But we should not do this (although UD English 2.0 does).
+  %\begin{itemize}
+  %\item Word form of the parts?
+  %\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Lemmas}
+\begin{itemize}
+\item Basic or citation form ($\Rightarrow$ it is an existing word in most cases)
+\bigskip
+\item Disambiguating ids, if available, go to MISC
+\bigskip
+\item Derivational vs. inflectional morphology (if participles are ADJ, their lemma should not be infinitive)
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Lemmas}
+\textit{within a year Algeria will become an islamic state}
+
+%# sent_id = lnd91301-001-p4s1
+\begin{tabular}{llllllllll}
+13 & do & do & ADP & \dots & \textcolor{red}{LId=do-1} \\
+14 & roka & rok & NOUN & \dots & \_ \\
+15 & se & se & PRON & \dots & \textcolor{purple}{LGloss=(zvr.\_zájmeno/částice)} \\
+16 & Alžírsko & Alžírsko & PROPN & \dots & \_ \\
+17 & stane & \textcolor{red}{stát} & VERB & \dots & \textcolor{red}{LId=stát-2} \\
+18 & islámským & islámský & ADJ & \dots & \_ \\
+19 & státem & \textcolor{red}{stát} & NOUN & \dots & \textcolor{red}{LId=stát-1}|\textcolor{purple}{LGloss=(státní\_útvar)}|SpaceAfter=No \\
+%13	do	do	ADP	RR--2----------	AdpType=Prep|Case=Gen	14	case	_	LId=do-1
+%14	roka	rok	NOUN	NNIS2-----A----	Animacy=Inan|Case=Gen|Gender=Masc|Number=Sing|Polarity=Pos	17	obl	_	_
+%15	se	se	PRON	P7-X4----------	Case=Acc|PronType=Prs|Reflex=Yes|Variant=Short	%17	expl:pv	_	LGloss=(zvr._zájmeno/částice)
+%16	Alžírsko	Alžírsko	PROPN	NNNS1-----A----	Case=Nom|Gender=Neut|NameType=Geo|Number=Sing|Polarity=Pos	17	nsubj	_	_
+%17	stane	stát	VERB	VB-S---3P-AA---	Mood=Ind|Number=Sing|Person=3|Polarity=Pos|Tense=Pres|VerbForm=Fin|Voice=Act	10	ccomp	_	LId=stát-2|LGloss=(něco_se_přihodilo)
+%18	islámským	islámský	ADJ	AAIS7----1A----	Animacy=Inan|Case=Ins|Degree=Pos|Gender=Masc|Number=Sing|Polarity=Pos	19	amod	_	_
+%19	státem	stát	NOUN	NNIS7-----A----	Animacy=Inan|Case=Ins|Gender=Masc|Number=Sing|Polarity=Pos	17	obj	_	SpaceAfter=No|LId=stát-1|LGloss=(státní_útvar)
+\end{tabular}
+\bigskip
+\begin{itemize}
+\item Basic or citation form
+\item Disambiguating ids, if available, go to MISC
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Part-of-Speech Tags}
+\begin{tabular}{ll|ll|ll}
+\multicolumn{2}{l|}{\textbf{Open}} & \multicolumn{2}{l|}{\textbf{Closed}} & \multicolumn{2}{l}{\textbf{Other}} \\\hline
+\upos{ADJ}   & adjective    & \upos{ADP}   & adposition & \upos{PUNCT} & punctuation \\
+\upos{ADV}   & adverb       & \upos{AUX}   & auxiliary    & \upos{SYM}   & symbol \\
+\upos{INTJ}  & interjection & \upos{CCONJ} & coordinator  & \upos{X}     & unknown \\
+\upos{NOUN}  & com.~noun    & \upos{DET}   & determiner   &       & \\
+\upos{PROPN} & prop.~noun   & \upos{NUM}   & numeral      &       & \\
+\upos{VERB}  & verb         & \upos{PART}  & particle     &       & \\
+             &              & \upos{PRON}  & pronoun      &       & \\
+             &              & \upos{SCONJ} & subordinator &       & \\
+\end{tabular}
+
+\bigskip
+\begin{itemize}
+\item Taxonomy of 17 universal POS tags
+\item All languages use the same inventory
+\begin{itemize}
+\item Not all tags have to be used by all languages
+\item Need extensions? Use features!
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Part-of-Speech Tags}
+\begin{itemize}
+% Paul Schachter and Timothy Shopen in Language Typology and Syntactic Description I.
+% pp. 1 -- 3
+\item Traditionally a mixture of morphological, syntactic/distributional and semantic/notional criteria
+\item Prefer grammatical > semantic criteria
+  \begin{itemize}
+  \item Language-particular definition of a category
+  \end{itemize}
+\item But the \alert{\textbf{name}} of the category is universal
+  \begin{itemize}
+  \item Translated words: overlapping categories, but not perfect match
+      \begin{itemize}
+      \item UPOS of English \textit{dog} is \upos{NOUN}; so is French \textit{chien} or Russian \textit{\ru{собака}}
+      \end{itemize}
+  \end{itemize}
+\item Preferably POS is encoded in lexicon, not heavily usage-dependent
+  \begin{itemize}
+  \item But not for incompatible syntactic functions\\(e.g. \upos{PRON} vs. \upos{SCONJ})
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Features}
+\begin{center}
+\begin{tabularx}{0.75\textwidth}{X|X|X}
+\textbf{Lexical} & \textbf{Inflectional (``Nominal'')} & \textbf{Inflectional (``Verbal'')} \\\hline
+\feat{PronType} & \feat{Gender}    & \feat{VerbForm}  \\
+\feat{NumType}  & \feat{Animacy}   & \feat{Mood}      \\
+\feat{Poss}     & \feat{NounClass} & \feat{Tense}     \\
+\feat{Reflect}  & \feat{Number}    & \feat{Aspect}    \\
+\feat{Foreign}  & \feat{Case}      & \feat{Voice}     \\
+\feat{Abbr}     & \feat{Definite}  & \feat{Evident}   \\
+\feat{Typo}     & \feat{Degree}    & \feat{Polarity}  \\
+                &                  & \feat{Person}    \\
+                &                  & \feat{Polite}    \\
+                &                  & \feat{Clusivity} \\
+\end{tabularx}
+\end{center}
+
+\begin{itemize}
+\item 24 features, each with a number of possible \textit{values}
+\item Languages select relevant features
+\item May add language-specific features or values
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Language-Specific Features}
+Three types of infinitives in Finnish:
+% Documentation: Traditionally five different infinitives have been recognized, but UD Finnish follows the modern ISK grammar in only recognizing three verb forms as infinitives, namely those known as the first, second and third infinitives (alternatively termed the A-, E- and MA-infinitives, see e.g. VISK § 119; in Finnish).
+% The 1st infinitive roughly corresponds to the English infinitive introduced by _to_.
+% These are examples from data. Maybe I should obtain the other case forms of the 2nd and 3rd infinitive.
+%1st infinitive = olla
+%2nd infinitive = ollessa (Ine), ollen (Ins), oltaessa (Ine|Pass)
+%3rd infinitive = olematta (Abe), olemalla (Ade), olemasta (Ela), olemaan (Ill), olemassa (Ine)
+
+%2nd ... Ine: two actions happen at the same time (while doing)
+%        Ins (instructive):
+%3rd Ill/maan = in order to do; Ine/massa = (sitting here,) doing; Ela/masta = going from doing apod.; Ade/malla = how: by doing; Abe/matta = without doing.
+
+Example: \textit{olla} ``to be''
+
+\begin{tabular}{l|l|l}
+1st & 2nd & 3rd \\\hline
+olla & ollessa & olemassa \\
+& ollen & olemaan \\
+& & olemasta \\
+& & olemalla \\
+& & olematta \\
+\end{tabular}
+\end{frame}
+
+
+
+\begin{frame}{Language-Specific Features}
+% Searched UD_Finnish for a short sentence with two different infinitives.
+% Found this one:
+% Miten saada nainen nauttimaan arkiseksistä?
+% Ran it through Google Translate.
+% Decided to look for another example... :)
+
+% Joku yrittää piristää itseään värjäämällä hiuksensa.
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+Joku \& yrittää \& piristää \& itseään \& värjäämällä \& hiuksensa \\
+Someone \& tries \& to-uplift \& oneself \& by-staining \& their-hair \\
+\upos{PRON} \& \upos{VERB} \& \upos{VERB} \& \upos{PRON} \& \upos{VERB} \& \upos{NOUN} \\
+ \& \feat{VerbForm=Fin} \& \feat{VerbForm=Inf} \& \& \feat{VerbForm=}\only<1>{\hlfeat{Inf3}}\only<2>{\badfeat{Inf3}} \\
+ \& \feat{Mood=Ind} \& \& \& \feat{Case=Ade} \\
+ \& \feat{Tense=Pres} \& \& \& \\
+\end{deptext}
+\end{dependency}
+
+\visible<2>{
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+Joku \& yrittää \& piristää \& itseään \& värjäämällä \& hiuksensa \\
+Someone \& tries \& to-uplift \& oneself \& by-staining \& their-hair \\
+\upos{PRON} \& \upos{VERB} \& \upos{VERB} \& \upos{PRON} \& \upos{VERB} \& \upos{NOUN} \\
+ \& \feat{VerbForm=Fin} \& \feat{VerbForm=Inf} \& \& \feat{VerbForm=Inf} \\
+ \& \feat{Mood=Ind} \& \hlfeat{InfForm=1} \& \& \hlfeat{InfForm=3} \\
+ \& \feat{Tense=Pres} \& \& \& \feat{Case=Ade} \\
+\end{deptext}
+\end{dependency}
+}
+\end{frame}
+
+
+
+\begin{frame}{Layered Features}
+Czech adjectives agree with nouns in gender.
+
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+velký \& bratr \\
+big   \& brother \\
+\upos{ADJ} \& \upos{NOUN} \\
+\feat{Gender=Masc} \& \feat{Gender=Masc} \\
+\end{deptext}
+\end{dependency}
+
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+velká \& sestra \\
+big   \& sister \\
+\upos{ADJ} \& \upos{NOUN} \\
+\feat{Gender=Fem} \& \feat{Gender=Fem} \\
+\end{deptext}
+\end{dependency}
+\end{frame}
+
+
+
+\begin{frame}{Layered Features}
+Possessive adjectives: agreement gender vs. lexical gender
+
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+otcův    \& bratr \\
+father's \& brother \\
+\upos{ADJ} \& \upos{NOUN} \\
+\feat{Gender=Masc} \& \feat{Gender=Masc} \\
+\feat{Gender[psor]=Masc} \& \\
+\end{deptext}
+\end{dependency}
+\hspace{1cm}
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+matčin   \& bratr \\
+mother's \& brother \\
+\upos{ADJ} \& \upos{NOUN} \\
+\feat{Gender=Masc} \& \feat{Gender=Masc} \\
+\feat{Gender[psor]=Fem} \& \\
+\end{deptext}
+\end{dependency}
+
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+otcova   \& sestra \\
+father's \& sister \\
+\upos{ADJ} \& \upos{NOUN} \\
+\feat{Gender=Fem} \& \feat{Gender=Fem} \\
+\feat{Gender[psor]=Masc} \& \\
+\end{deptext}
+\end{dependency}
+\hspace{1cm}
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+matčina  \& sestra \\
+mother's \& sister \\
+\upos{ADJ} \& \upos{NOUN} \\
+\feat{Gender=Fem} \& \feat{Gender=Fem} \\
+\feat{Gender[psor]=Fem} \& \\
+\end{deptext}
+\end{dependency}
+\end{frame}
+
+
+
+\begin{frame}{Multi-valued Features (Disjunction / Parallel Application)}
+\begin{itemize}
+\item Feature can have two or more values
+\item Interpreted as disjunction
+\item Example: in some languages, many pronouns function both as interrogative and relative, but some pronouns are only relative. The former will have \feat{PronType=Int,Rel}
+\item In other cases, it is desirable to disambiguate by context. Polish \textit{którym} (form of \textit{który} ``which'') can be \feat{Case=Ins}, \feat{Loc} in singular or \feat{Dat} in plural but we do not want to annotate \feat{Case=Dat,Ins,Loc}!
+\item All values of the feature/language? Omit the feature completely! Polish: \feat{\sout{Gender=Fem,Masc,Neut}}. Spanish: \feat{\sout{Gender=Fem,Masc}}
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Multi-valued Features (Serial Application)}
+\begin{itemize}
+\item Currently used in Turkish (language-specific values)
+\bigskip
+\item Two or more morphemes in chain, affecting the same feature
+\bigskip
+\item Example: \feat{Voice=CauPass} (causative + passive => someone is caused to do something)
+  \begin{itemize}
+  \item \textit{yanıl} ``be wrong''
+  \item \textit{yanılmışım} \feat{Voice=Act} ``I was wrong''
+  \item \textit{okuru yanılttığını} \feat{Voice=Cau} ``mislead the reader''
+  \item \textit{okurlar yanıltılmıştır} \feat{Voice=CauPass} ``readers were misled''
+  \item<2-> Hypothetical: \feat{Voice=PassCau} (not used in Turkish) could mean ``to cause something to be done by someone''
+  \end{itemize}
+% Other instances are in Mood, Tense and Aspect.
+% Documentation does not mention them, only the treebank statistics, but I don't understand all the shades of meaning.
+% http://www.turkishlanguage.co.uk/causative.htm
+% The causative verb stem is usually formed by adding -dir-/-tir- -dır-/-tır- -dur-/-tur- -dür-/-tür-. The resulting causative verb stem can have all mood and tense endings added as required.
+% The Turkish passive verb stem is formed by adding the passive suffix -il or -in to the basic verb stem. The verb stem of course can be an indicative, co-operative or a causative verb stem.
+% For verbs Stems ending in a consonant, except -l, the suffix -il [subject to Vowel Harmony] is added to the verb stem. For those verb stems which themselves end on -l then the suffix -in [subject to vowel harmony] is added.
+% Voice=Act: yapmak ``to do something''
+% Voice=Pass: yapılmak ``to be done''
+% Voice=Cau: yaptırmak ``to get something done''
+% Voice=CauPass: yaptırılmak ``to be caused to do something''
+% Voice=Act: kırmak ``to break (itself)''
+% Voice=Cau: kırdırmak ``to break something''
+% Voice=Pass: kırılmak ``to be broken'' (itself in a broken state)
+% Voice=CauPass: kırdırılmak ``to be broken by somebody''
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Features Apply to Individual Words}
+Future tense in Spanish and German: no \feat{Tense=Fut} in German!
+
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+Dormirá \\
+He-will-sleep \\
+\upos{VERB} \\
+\feat{VerbForm=Fin} \\
+\feat{Mood=Ind} \\
+\hlfeat{Tense=Fut} \\
+\feat{Number=Sing} \\
+\feat{Person=3} \\
+\end{deptext}
+\end{dependency}
+\hspace{1cm}
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+Er \& wird \& schlafen \\
+He \& will \& sleep \\
+\upos{PRON} \& \upos{AUX} \& \upos{VERB} \\
+\feat{PronType=Prs} \& \feat{VerbForm=Fin} \& \feat{VerbForm=Inf} \\
+\feat{Number=Sing} \& \feat{Mood=Ind} \& \\
+\feat{Person=3} \& \hlfeat{Tense=Pres} \& \\
+\feat{Gender=Masc} \& \feat{Number=Sing} \& \\
+\feat{Case=Nom} \& \feat{Person=3} \& \\
+\end{deptext}
+\end{dependency}
+\end{frame}
+
+
+
+\begin{frame}{Participle Types}
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+\ru{некурящий} \& \ru{человек} \\
+nekurjaščij \& čelovek \\
+non-smoking \& person \\
+\upos{ADJ} \& \upos{NOUN} \\
+\feat{VerbForm=Part} \\
+\hlfeat{Tense=Pres} \\
+\feat{Gender=Masc} \& \feat{Gender=Masc} \\
+\feat{Number=Sing} \& \feat{Number=Sing} \\
+\feat{Case=Nom} \& \feat{Case=Nom} \\
+\end{deptext}
+\end{dependency}
+\hspace{0.9cm}
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+\ru{начавшийся} \& \ru{разговор} \\
+načavšijsja \& razgovor \\
+that-has-started \& conversation \\
+\upos{ADJ} \& \upos{NOUN} \\
+\feat{VerbForm=Part} \\
+\hlfeat{Tense=Past} \\
+\feat{Gender=Masc} \& \feat{Gender=Masc} \\
+\feat{Number=Sing} \& \feat{Number=Sing} \\
+\feat{Case=Nom} \& \feat{Case=Nom} \\
+\end{deptext}
+\end{dependency}
+
+\begin{itemize}
+\item Sometimes features like \feat{Tense} help distinguish participle types
+\item Not the same tense as with finite verbs (reference point)
+\item But useful because:
+\begin{itemize}
+\item We use known UD primitives rather than language-specific labels such as \badfeat{VerbForm=PastPart}, or even \badfeat{ParticType=Past}
+\item Reasonably close to the grammatical meaning
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Conflicting Traditional Terminologies}
+\begin{itemize}
+\item If possible, stay compatible with traditional grammar
+\item Often it is not possible: terminology conflicts
+\item \textbf{\feat{VerbForm=Conv}} -- \textit{\underline{converb}, transgressive, adverbial participle, gerund}
+\item<2-> \textit{Gerund} (\feat{VerbForm=Ger})
+  \begin{itemize}
+  \item English: close to verbal nouns (\textbf{\feat{VerbForm=Vnoun}})
+  \item Spanish:
+  %\textit{gerundio}
+  more like present participle (\textbf{\feat{VerbForm=Part | Tense=Pres}})
+  \item Slavic: converb (\textbf{\feat{VerbForm=Conv}})
+  \end{itemize}
+\item<3-> \textit{Aorist}
+  \begin{itemize}
+  \item Ancient Greek, Turkish: neutral \underline{non-past} tense (they use a language-specific value \feat{Tense=Aor})
+  \item Slavic languages: simple \underline{past} tense (\textbf{\feat{Tense=Past}})
+  \end{itemize}
+%\item<4-> \textit{L-participle in Slavic\dots}
+\end{itemize}
+\end{frame}
+
+
+
+% Too specific, not enough time. Hiding two slides.
+\ifExtraSlides
+\begin{frame}{Conflicting Traditional Terminologies}
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+A \& ko \& so \& se \& leta \& 1942 \& vračali \& \dots \\
+And \& as \& they-were \& REFL \& in-year \& 1942 \& returning \& \dots \\
+\upos{CCONJ} \& \upos{SCONJ} \& \upos{AUX} \& \upos{PRON} \& \upos{NOUN} \& \upos{NUM} \& \upos{VERB} \\
+\& \& \feat{VerbForm=Fin} \& \& \& \& \feat{VerbForm=Part} \\
+\& \& \feat{Tense=Pres} \& \& \& \& \hlfeat{Tense=Past?} \\
+\end{deptext}
+\end{dependency}
+
+\visible<2->{%
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+da \& ne \& bi \& v \& Atene \& prišli \& \dots \\
+that \& not \& would \& in \& Athens \& they-come \& \dots \\
+\upos{SCONJ} \& \upos{PART} \& \upos{AUX} \& \upos{ADP} \& \upos{PROPN} \& \upos{VERB} \\
+\& \& \feat{VerbForm=Fin} \& \& \& \feat{VerbForm=Part} \\
+\& \& \feat{Mood=Cnd} \& \& \& \hlfeat{Tense=Past??} \\
+\end{deptext}
+\end{dependency}%
+}
+
+\visible<3->{%
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+v \& prihodnje \& ne \& bodo \& vozili \& zgolj \& les \\
+in \& future \& not \& they-will \& drive \& just \& wood \\
+\upos{ADP} \& \upos{NOUN} \& \upos{PART} \& \upos{AUX} \& \upos{VERB} \& \upos{PART} \& \upos{NOUN} \\
+\& \& \& \feat{VerbForm=Fin} \& \feat{VerbForm=Part} \\
+\& \& \& \feat{Tense=Fut} \& \hlfeat{Tense=Past???} \\
+\end{deptext}
+\end{dependency}%
+}
+\end{frame}
+
+
+
+\begin{frame}{Conflicting Traditional Terminologies}
+\begin{itemize}
+\item West/South Slavic: \textbf{\feat{VerbForm=Part}}
+\item Russian: \feat{VerbForm=Fin} (past tense)
+  \begin{itemize}
+  \item \textbf{\feat{Tense=Past}} useful to distinguish from other participles (especially in Bulgarian)
+  \item But it is also used for the conditional (any tense)
+  \item In Slovenian even for the future tense!
+  \end{itemize}
+\item<2-> Terminology -- options:
+\begin{itemize}
+\item [cs] ``active participle'' / ``past tense''
+\item [ru] ``past tense'' / ``finite!''
+  \begin{itemize}
+  \item Active participle is something else: \textit{нарушивший / narušivšij}
+  \end{itemize}
+\item [bg] ``participle + past (aorist) / imperfect'' (two subtypes)
+\item [cu] ``participle + resultative aspect'' (lang-spec)
+\end{itemize}
+\bigskip
+\item<3-> ``l-participle''
+  \begin{itemize}
+  \item But that would be a language-specific verb form.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+\fi
+
+
+
+\begin{frame}
+  \centering\Huge Questions?
+\end{frame}
+
+
+
+\begin{frame}{Errors in Underlying Text}
+\begin{itemize}
+\item Currently not covered by the guidelines
+\item We do not want to hide errors (learning robust parsers!)
+\item<2-> Possibilities:
+\item<2-4> Typo not involving word boundary
+  \begin{itemize}
+  \item FORM = \textit{anotation}; LEMMA = \textit{annotation}; FEATS: \feat{Typo=Yes}; MISC: \feat{Correct=annotation}
+  \end{itemize}
+\item<3-4> Wrongly split word: %\textit{ann otation}
+\begin{dependency}[label style={thick, font=\bfseries}]
+\begin{deptext}[font=\bfseries]
+ann \& otation \\
+\upos{X} \& \upos{X} \\
+\end{deptext}
+\depedge{1}{2}{goeswith}
+\end{dependency}
+\item<4-4> Wrongly merged words: \textit{thecar}
+  \begin{itemize}
+  \item Fix tokenization (i.e. two lines); first line MISC: \feat{SpaceAfter=No} | \feat{CorrectSpaceAfter=Yes}
+  \item Sentence segmentation can be affected, too!
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Errors in Underlying Text}
+\begin{itemize}
+\item Wrong morphology: \textit{the \textcolor{red}{cars is} produced in Detroit}
+  \begin{itemize}
+  \item<2-> Not like normal typo \textit{(the car iss produced\dots{})}
+  \item<3-> Not obvious what is correct
+    \begin{itemize}
+    \item \textit{the \textcolor{red}{car} is}
+    \item \textit{the cars \textcolor{red}{are}}
+    \end{itemize}
+  \end{itemize}
+\item<4-> Suggestion: select which word to fix, e.g. \textit{cars} to \textit{car}
+\item<4-> FORM = \textit{cars}; FEATS: \feat{Number=Plur}; MISC: \feat{Correct=car} | \feat{CorrectNumber=Sing}
+\item<5-> cs: \textit{viděl \textcolor{red}{moři}} ``he saw the sea''
+  \begin{itemize}
+  \item Should be \textit{moře}
+  \item Would be \feat{Case=Acc} (disambiguated from \feat{Case=Acc,Gen,Nom,Voc})
+  \item This form is \feat{Case=Dat,Loc} (but which one?)
+  \end{itemize}
+\item<5-> \textit{cestoval k moři} ``he traveled to the sea'' \feat{Case=Dat}
+\item<5-> \textit{plavil se po moři} ``he sailed the sea'' \feat{Case=Loc}
+\end{itemize}
+\end{frame}
+
+
+\end{document}
